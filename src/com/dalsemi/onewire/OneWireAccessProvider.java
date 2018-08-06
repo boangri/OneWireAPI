@@ -132,7 +132,7 @@ public class OneWireAccessProvider
    /**
     * System Version String
     */
-   private static final String owapi_version = "1.2";
+   private static final String owapi_version = "1.2.1";
 
 
    /**
@@ -290,6 +290,25 @@ public class OneWireAccessProvider
          System.err.println("Please download the latest drivers from http://www.ibutton.com ");
          System.err.println("Or install RXTX Serial Communications API from http://www.rxtx.org ");
          System.err.println();
+      }
+
+      // try PDK adapater
+      try
+      {
+         adapter_class    =
+            Class.forName("com.dalsemi.onewire.adapter.PDKAdapterUSB");
+         adapter_instance = ( DSPortAdapter ) adapter_class.newInstance();
+
+         adapter_vector.addElement(adapter_instance);
+      }
+      catch (java.lang.NoClassDefFoundError e)
+      {
+         System.err.println(
+            "Warning: Could not load PDKAdapter: " + e);
+      }
+      catch (Exception e)
+      {
+         // DRAIN
       }
 
       // get the network adapter
